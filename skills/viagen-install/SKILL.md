@@ -37,12 +37,32 @@ export default defineConfig({
 
 If the file already imports `viagen`, skip this step.
 
-### 3. Next steps
+### 3. Add the client script (SSR frameworks only)
 
-Tell the user to run `npx viagen setup` to configure authentication and
-environment variables, then `npm run dev` to start.
+For plain Vite apps, the chat panel is injected automatically. SSR frameworks
+(React Router, Remix, SvelteKit, etc.) render their own HTML, so you need to
+add a script tag to the root layout's `<head>`:
+
+```html
+<script src="/via/client.js" defer></script>
+```
+
+To detect if this is needed, check if the project uses an SSR framework:
+- **React Router / Remix** — look for `app/root.tsx`, add the script in the `<head>`
+- **SvelteKit** — look for `src/app.html`, add the script in the `<head>`
+- **Nuxt** — look for `app.vue` or `nuxt.config.ts`
+
+If the project is a plain Vite SPA (just `index.html`), skip this step.
+
+### 4. Next steps
+
+Tell the user:
+- Run `npm run dev` to start the local dev server with viagen
+- To use sandboxes via the CLI, run `npx viagen setup` in a separate terminal —
+  it's an interactive wizard that configures auth, GitHub, Vercel, and `.env`
 
 ## Notes
 
 - viagen requires `vite >= 4` as a peer dependency
-- Do NOT modify `.env` or run the setup wizard — that's a separate step
+- Do NOT modify `.env` or run the setup wizard — it's interactive and must be
+  run separately by the user
