@@ -14,19 +14,16 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) marketplace plug
    /plugin install viagen@viagen-marketplace
    ```
 
-3. Run the setup skill:
+3. Run the install skill:
    ```
-   /viagen-setup
+   /viagen-install
    ```
 
-## What it does
+## Skills
 
-The `/viagen-setup` skill will:
-
-1. Install the `viagen` npm package as a dev dependency
-2. Add the `viagen()` plugin to your Vite config
-3. Run the interactive setup wizard (`npx viagen setup`)
-4. Verify your `.env` is configured correctly
+- `/viagen-install` — Install viagen into your Vite project (npm install + vite.config update)
+- `/viagen-sandbox` — Deploy to a remote Vercel Sandbox
+- `/viagen-status` — Check viagen installation, config, and health
 
 ## Requirements
 
