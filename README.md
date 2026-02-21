@@ -6,7 +6,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) marketplace plug
 
 1. Add the marketplace:
    ```
-   /plugin marketplace add viagen/viagen-claude-plugin
+   /plugin marketplace add viagen-dev/viagen-claude-plugin
    ```
 
 2. Install the plugin:
