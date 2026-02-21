@@ -1,0 +1,17 @@
+{
+  "name": "viagen-marketplace",
+  "owner": {
+    "name": "Ben Ipsen"
+  },
+  "plugins": [
+    {
+      "name": "viagen",
+      "source": ".",
+      "description": "Install and configure viagen",
+      "version": "0.0.22",
+      "author": {
+        "name": "Ben Ipsen"
+      }
+    }
+  ]
+}

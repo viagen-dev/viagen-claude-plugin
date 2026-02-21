@@ -1,0 +1,11 @@
+{
+  "name": "viagen",
+  "description": "Install and configure viagen — AI-powered Vite dev server plugin",
+  "version": "0.0.22",
+  "author": {
+    "name": "Ben Ipsen"
+  },
+  "homepage": "https://github.com/viagen/viagen",
+  "repository": "https://github.com/viagen/viagen-claude-plugin",
+  "license": "MIT"
+}
