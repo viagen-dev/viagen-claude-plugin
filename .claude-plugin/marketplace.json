@@ -6,7 +6,11 @@
   "plugins": [
     {
       "name": "viagen",
-      "source": ".",
+      "source": {
+        "source": "github",
+        "repo": "viagen-dev/viagen-claude-plugin",
+        "ref": "main"
+      },
       "description": "Install and configure viagen",
       "version": "0.0.22",
       "author": {
