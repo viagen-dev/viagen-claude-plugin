@@ -24,6 +24,7 @@ A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) marketplace plug
 - `/viagen-install` — Install viagen into your Vite project (npm install + vite.config update)
 - `/viagen-sandbox` — Deploy to a remote Vercel Sandbox
 - `/viagen-status` — Check viagen installation, config, and health
+- `/viagen-setup-auth` — Configure sandbox auth bypass (auto-authenticate in sandbox mode)
 
 ## Requirements
 
