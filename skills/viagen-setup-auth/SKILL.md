@@ -21,7 +21,10 @@ When `VIAGEN_AUTH_TOKEN` is present in the environment the app is running in a
 viagen sandbox. In that mode, OAuth flows are skipped and a mock user session
 is created from these env vars:
 
-- `VIAGEN_SANDBOX_USER_EMAIL` — mock user email
+- `VIAGEN_AUTH_EMAIL` — the real email of the user who launched the sandbox
+  (injected automatically by the platform)
+- `VIAGEN_SANDBOX_USER_EMAIL` — override mock user email (falls back to
+  `VIAGEN_AUTH_EMAIL` if not set)
 - `VIAGEN_SANDBOX_USER_NAME` — mock user name (default: `"Sandbox User"`)
 - `VIAGEN_SANDBOX_USER_ID` — mock user ID (default: `"sandbox-user-1"`)
 - `VIAGEN_SANDBOX_USER_IMAGE` — mock user avatar URL (optional)
@@ -51,8 +54,14 @@ Is that correct?"_
 
 ## Step 2: Ask for mock user details
 
+The platform automatically injects `VIAGEN_AUTH_EMAIL` with the real email of
+the user who launched the sandbox. This is used as the default mock email so
+the sandbox user matches the actual platform user.
+
 Ask the user:
-1. **Email** for the sandbox mock user (suggest `dev@sandbox.viagen.dev`)
+1. **Email** for the sandbox mock user (suggest using `VIAGEN_AUTH_EMAIL` —
+   the user's real email — which is the default; or `dev@sandbox.viagen.dev`
+   if they prefer a generic one)
 2. **Name** (suggest `Sandbox User`)
 3. **User ID** (suggest `sandbox-user-1`)
 
@@ -94,7 +103,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
             async authorize() {
               return {
                 id: process.env.VIAGEN_SANDBOX_USER_ID ?? "sandbox-user-1",
-                email: process.env.VIAGEN_SANDBOX_USER_EMAIL ?? "dev@sandbox.viagen.dev",
+                email: process.env.VIAGEN_SANDBOX_USER_EMAIL ?? process.env.VIAGEN_AUTH_EMAIL ?? "dev@sandbox.viagen.dev",
                 name: process.env.VIAGEN_SANDBOX_USER_NAME ?? "Sandbox User",
                 image: process.env.VIAGEN_SANDBOX_USER_IMAGE ?? null,
               };
@@ -202,7 +211,7 @@ export async function ensureSandboxSession(supabase: SupabaseClient) {
   const { data: { session } } = await supabase.auth.getSession();
   if (session) return;
 
-  const email = process.env.VIAGEN_SANDBOX_SUPABASE_EMAIL;
+  const email = process.env.VIAGEN_SANDBOX_SUPABASE_EMAIL ?? process.env.VIAGEN_AUTH_EMAIL;
   const password = process.env.VIAGEN_SANDBOX_SUPABASE_PASSWORD;
   if (!email || !password) return;
 
@@ -275,9 +284,11 @@ export const auth = betterAuth({
 export async function ensureSandboxUser(auth: ReturnType<typeof import("better-auth").betterAuth>) {
   if (!process.env.VIAGEN_AUTH_TOKEN) return;
 
-  const email = process.env.VIAGEN_SANDBOX_USER_EMAIL ?? "dev@sandbox.viagen.dev";
+  const email = process.env.VIAGEN_SANDBOX_USER_EMAIL ?? process.env.VIAGEN_AUTH_EMAIL ?? "dev@sandbox.viagen.dev";
   const name = process.env.VIAGEN_SANDBOX_USER_NAME ?? "Sandbox User";
   const password = "viagen-sandbox-" + (process.env.VIAGEN_AUTH_TOKEN ?? "dev");
+
+  // VIAGEN_AUTH_EMAIL is injected by the platform with the real user's email
 
   // Try to sign in first; if user doesn't exist, sign up
   try {
@@ -313,7 +324,7 @@ export async function getSession(request: Request) {
     return {
       user: {
         id: process.env.VIAGEN_SANDBOX_USER_ID ?? "sandbox-user-1",
-        email: process.env.VIAGEN_SANDBOX_USER_EMAIL ?? "dev@sandbox.viagen.dev",
+        email: process.env.VIAGEN_SANDBOX_USER_EMAIL ?? process.env.VIAGEN_AUTH_EMAIL ?? "dev@sandbox.viagen.dev",
         name: process.env.VIAGEN_SANDBOX_USER_NAME ?? "Sandbox User",
         avatarUrl: process.env.VIAGEN_SANDBOX_USER_IMAGE ?? null,
       },
