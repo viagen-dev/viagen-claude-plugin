@@ -54,7 +54,13 @@ To detect if this is needed, check if the project uses an SSR framework:
 
 If the project is a plain Vite SPA (just `index.html`), skip this step.
 
-### 4. Next steps
+### 4. Add `.viagen` to `.gitignore`
+
+The `.viagen` directory contains local runtime data that should not be committed.
+Find the project's `.gitignore` and append `.viagen` if it isn't already listed.
+If no `.gitignore` exists, create one with `.viagen` as its contents.
+
+### 5. Next steps
 
 Tell the user:
 - Run `npm run dev` to start the local dev server with viagen
