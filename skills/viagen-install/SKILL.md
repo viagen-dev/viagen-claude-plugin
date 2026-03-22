@@ -37,6 +37,35 @@ export default defineConfig({
 
 If the file already imports `viagen`, skip this step.
 
+**Astro projects:** Astro uses its own config format. Add viagen to `astro.config.mjs`:
+
+```ts
+import { viagen } from 'viagen'
+
+export default defineConfig({
+  vite: {
+    plugins: [viagen()],
+    server: {
+      allowedHosts: true,
+    },
+  },
+})
+```
+
+**Important:** For any framework, ensure `server.allowedHosts` is set to `true` in the
+Vite config. This is required for viagen sandboxes which use dynamic hostnames. The
+viagen plugin sets this automatically when sandbox env vars are detected, but adding it
+explicitly ensures it works in all deployment modes:
+
+```ts
+export default defineConfig({
+  plugins: [viagen()],
+  server: {
+    allowedHosts: true,
+  },
+})
+```
+
 ### 3. Add the client script (SSR frameworks only)
 
 For plain Vite apps, the chat panel is injected automatically. SSR frameworks
